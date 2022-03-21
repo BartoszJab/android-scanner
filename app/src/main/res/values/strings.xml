@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ScannerApplication</string>
+    <string name="search_product">Wyszukaj produkt</string>
+</resources>
