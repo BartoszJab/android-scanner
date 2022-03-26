@@ -11,6 +11,10 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
+import androidx.room.Room
+import com.example.scannerapplication.constants.DATABASE_NAME
+import com.example.scannerapplication.dao.ProductDao
+import com.example.scannerapplication.database.AppDatabase
 import com.example.scannerapplication.databinding.ActivityMainBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.journeyapps.barcodescanner.ScanContract
@@ -19,12 +23,21 @@ import com.journeyapps.barcodescanner.ScanOptions
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var productDao: ProductDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        // set up database
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, DATABASE_NAME
+        ).build()
+
+        productDao = db.productDao()
 
         // Register the launcher and result handler
         val barcodeLauncher: ActivityResultLauncher<ScanOptions> = registerForActivityResult(
