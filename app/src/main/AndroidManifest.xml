@@ -12,7 +12,7 @@
         android:theme="@style/Theme.ScannerApplication">
 
         <activity
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
