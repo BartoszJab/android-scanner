@@ -20,10 +20,10 @@
         android:id="@+id/btnScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginEnd="16dp"
         android:text="scan"
-        app:layout_constraintTop_toTopOf="@id/imageButtonSearch"
-        app:layout_constraintStart_toEndOf="@id/imageButtonSearch"/>
+        app:layout_constraintTop_toTopOf="@id/editTextSearch"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"
@@ -47,40 +47,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextSearch" />
 
-    <ImageButton
-        android:id="@+id/imageButtonSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.605"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_search" />
-
     <EditText
         android:id="@+id/editTextSearch"
-        android:layout_width="181dp"
+        android:layout_width="0dp"
         android:layout_height="47dp"
         android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/search_product"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/imageButtonSearch"
+        app:layout_constraintEnd_toStartOf="@+id/btnScan"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-<!--    <Spinner-->
-<!--        android:id="@+id/spinnerSearch"-->
-<!--        android:layout_width="119dp"-->
-<!--        android:layout_height="51dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.695"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/imageButtonSearch"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
