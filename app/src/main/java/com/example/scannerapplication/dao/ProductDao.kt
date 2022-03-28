@@ -18,8 +18,8 @@ interface ProductDao {
     @Query("SELECT * FROM $PRODUCTS_TABLE WHERE $BARCODE LIKE '%' || :data || '%' OR $PRODUCT_NAME LIKE '%' || :data || '%'")
     fun findByGivenData(data: String): Flow<List<Product>>
 
-    @Delete
-    suspend fun delete(product: Product)
+    @Query("DELETE FROM $PRODUCTS_TABLE WHERE uid = :uid")
+    suspend fun delete(uid: Int)
 
     @Insert
     suspend fun insertProduct(product: Product)

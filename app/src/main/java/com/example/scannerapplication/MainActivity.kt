@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scannerapplication.databinding.ActivityMainBinding
 import com.example.scannerapplication.models.Product
 import com.example.scannerapplication.utils.AddProductDialog
+import com.example.scannerapplication.utils.DeleteProductDialog
 import com.example.scannerapplication.viewmodel.ProductViewModel
 import com.example.scannerapplication.viewmodel.ProductViewModelFactory
 import com.journeyapps.barcodescanner.ScanContract
@@ -76,7 +77,12 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener {
 
 
     override fun onDeleteClick(position: Int) {
-
+        val deleteProductDialog = DeleteProductDialog()
+        val bundle = Bundle().apply {
+            putInt("uid", listOfProducts[position].uid)
+        }
+        deleteProductDialog.arguments = bundle
+        deleteProductDialog.show(supportFragmentManager, DeleteProductDialog.TAG)
     }
 
 }
