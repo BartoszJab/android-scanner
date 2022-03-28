@@ -1,29 +1,32 @@
 package com.example.scannerapplication
 
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.util.Log
+import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.room.Room
-import com.example.scannerapplication.constants.DATABASE_NAME
-import com.example.scannerapplication.dao.ProductDao
-import com.example.scannerapplication.database.AppDatabase
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scannerapplication.databinding.ActivityMainBinding
+import com.example.scannerapplication.models.Product
+import com.example.scannerapplication.viewmodel.ProductViewModel
+import com.example.scannerapplication.viewmodel.ProductViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import kotlinx.coroutines.*
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var productDao: ProductDao
+    private var listOfProducts: List<Product> = listOf()
+    private val productViewModel: ProductViewModel by viewModels {
+        ProductViewModelFactory((application as ScannerApp).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,27 +34,36 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        // set up database
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, DATABASE_NAME
-        ).build()
-
-        productDao = db.productDao()
-
         // Register the launcher and result handler
         val barcodeLauncher: ActivityResultLauncher<ScanOptions> = registerForActivityResult(
-            ScanContract()) {
-            result ->
-            if(result.contents == null) {
+            ScanContract()
+        ) { result ->
+            if (result.contents == null) {
                 Toast.makeText(applicationContext, "Anulowano", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(applicationContext, "Zeskanowano: " + result.contents, Toast.LENGTH_LONG).show();
-                binding.etContent.setText(result.contents.toString())
+                Toast.makeText(
+                    applicationContext,
+                    "Zeskanowano: " + result.contents,
+                    Toast.LENGTH_LONG
+                ).show();
                 // wyswietl dialog z dodaniem produktu do bazy
                 showAddDialog(barcode = result.contents.toString())
             }
         }
+
+        val recyclerView = binding.rvProducts
+        val adapter = ProductsAdapter(listOfProducts)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        binding.editTextSearch.addTextChangedListener { text ->
+            productViewModel.findLikeGivenData(text.toString())
+        }
+
+        productViewModel.searchedProducts.observe(this, { searchedProducts ->
+            listOfProducts = searchedProducts
+            recyclerView.adapter = ProductsAdapter(listOfProducts)
+        })
 
         binding.btnScan.setOnClickListener {
             barcodeLauncher.launch(ScanOptions())
@@ -62,13 +74,12 @@ class MainActivity : AppCompatActivity() {
     private fun showAddDialog(barcode: String) {
         val linearLayout = LinearLayout(this)
         linearLayout.orientation = LinearLayout.VERTICAL
-        val barcodeInput = EditText(this)
-        barcodeInput.setHint("Kod produktu")
-        barcodeInput.setText(barcode)
+        val barcodeInput = TextView(this)
+        barcodeInput.text = barcode
         barcodeInput.inputType = InputType.TYPE_CLASS_TEXT
 
         val productNameInput = EditText(this)
-        productNameInput.setHint("Nazwa produktu")
+        productNameInput.hint = "Nazwa produktu"
         productNameInput.inputType = InputType.TYPE_CLASS_TEXT
 
         linearLayout.addView(barcodeInput)
@@ -78,24 +89,29 @@ class MainActivity : AppCompatActivity() {
             .setTitle("Dodaj produkt")
             .setMessage("Czy chcesz dodac produkt?")
             .setCancelable(false)
-            .setNegativeButton("Anuluj") { _, _ -> cancel()}
+            .setNegativeButton("Anuluj") { _, _ -> cancel() }
             .setView(linearLayout)
             .setPositiveButton("Dodaj", null)
             .show()
-
 
 
         val positiveButton: Button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
         positiveButton.setOnClickListener {
             val currentBarcode = barcodeInput.text.toString()
             val currentProductName = productNameInput.text.toString()
-            if (currentBarcode.trim().isEmpty() || currentProductName.trim().isEmpty())
-            {
-                Toast.makeText(applicationContext, "Nie mozna dodac produktu z pustymi polami", Toast.LENGTH_LONG).show();
+            if (currentBarcode.trim().isEmpty() || currentProductName.trim().isEmpty()) {
+                Toast.makeText(
+                    applicationContext,
+                    "Nie mozna dodac produktu z pustymi polami",
+                    Toast.LENGTH_LONG
+                ).show();
             } else {
                 // sprawdz czy produkt (jego kod kreskowy) znajduje sie w bazie
-                    // jesli nie ma to dodaj, jesli jest to anuluj
-//                addToDatabase()
+                // jesli nie ma to dodaj, jesli jest to anuluj
+                Log.d("xd", "$currentBarcode  $currentProductName")
+                productViewModel.insert(
+                    Product(barcode = currentBarcode, productName = currentProductName)
+                )
                 dialog?.dismiss()
             }
         }
@@ -105,7 +121,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun addToDatabase(barcode: String, productName: String) {
-        // dodac room do zapytan
-    }
 }
