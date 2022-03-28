@@ -9,7 +9,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scannerapplication.databinding.ActivityMainBinding
 import com.example.scannerapplication.models.Product
@@ -18,10 +17,9 @@ import com.example.scannerapplication.viewmodel.ProductViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
-import kotlinx.coroutines.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener {
     private lateinit var binding: ActivityMainBinding
     private var listOfProducts: List<Product> = listOf()
     private val productViewModel: ProductViewModel by viewModels {
@@ -52,9 +50,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         val recyclerView = binding.rvProducts
-        val adapter = ProductsAdapter(listOfProducts)
+        val adapter = ProductsAdapter(listOfProducts, this)
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+
 
         binding.editTextSearch.addTextChangedListener { text ->
             productViewModel.findLikeGivenData(text.toString())
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         productViewModel.searchedProducts.observe(this, { searchedProducts ->
             listOfProducts = searchedProducts
-            recyclerView.adapter = ProductsAdapter(listOfProducts)
+            recyclerView.adapter = ProductsAdapter(listOfProducts, this)
         })
 
         binding.btnScan.setOnClickListener {
@@ -119,6 +119,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun cancel() {
 
+    }
+
+    override fun onDeleteClick(position: Int) {
+        productViewModel.delete(listOfProducts[position])
     }
 
 }
