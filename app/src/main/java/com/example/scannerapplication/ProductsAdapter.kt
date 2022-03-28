@@ -16,11 +16,9 @@ class ProductsAdapter(private val allProducts: List<Product>, private val onDele
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         val product = allProducts[position]
         holder.binding.tvBarcode.text = product.barcode
         holder.binding.tvProductName.text = product.productName
-
     }
 
     override fun getItemCount(): Int = allProducts.size
