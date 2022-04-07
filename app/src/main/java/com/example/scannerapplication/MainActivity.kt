@@ -11,13 +11,14 @@ import com.example.scannerapplication.databinding.ActivityMainBinding
 import com.example.scannerapplication.models.Product
 import com.example.scannerapplication.utils.AddProductDialog
 import com.example.scannerapplication.utils.DeleteProductDialog
+import com.example.scannerapplication.utils.EditProductDialog
 import com.example.scannerapplication.viewmodel.ProductViewModel
 import com.example.scannerapplication.viewmodel.ProductViewModelFactory
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 
 
-class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener {
+class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener, ProductsAdapter.OnEditListener {
     private lateinit var binding: ActivityMainBinding
     private var listOfProducts: List<Product> = listOf()
     lateinit var dialog: AddProductDialog
@@ -43,20 +44,33 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener {
                     "Zeskanowano: " + result.contents,
                     Toast.LENGTH_LONG
                 ).show()
-                // wyswietl dialog z dodaniem produktu do bazy
-//                showAddDialog(barcode = result.contents.toString())
+                var numberOfProducts: Int = 0
+//                runOnUiThread {
+//                    numberOfProducts = productViewModel.numberOfProductsOfBarcode(result.contents.toString())
+//                }
 
-                val addProductDialog = AddProductDialog()
-                val bundle = Bundle().apply {
-                    putString("barcode", result.contents.toString())
+                if (numberOfProducts > 0) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Zeskanowany podukt istnieje w bazie: " + result.contents,
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+
+                    // wyswietl dialog z dodaniem produktu do bazy
+                    val addProductDialog = AddProductDialog()
+                    val bundle = Bundle().apply {
+                        putString("barcode", result.contents.toString())
+                    }
+                    addProductDialog.arguments = bundle
+                    addProductDialog.show(supportFragmentManager, AddProductDialog.TAG)
                 }
-                addProductDialog.arguments = bundle
-                addProductDialog.show(supportFragmentManager, AddProductDialog.TAG)
+
             }
         }
 
         val recyclerView = binding.rvProducts
-        val adapter = ProductsAdapter(listOfProducts, this)
+        val adapter = ProductsAdapter(listOfProducts, this, this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -67,7 +81,7 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener {
 
         productViewModel.searchedProducts.observe(this, { searchedProducts ->
             listOfProducts = searchedProducts
-            recyclerView.adapter = ProductsAdapter(listOfProducts, this)
+            recyclerView.adapter = ProductsAdapter(listOfProducts, this, this)
         })
 
         binding.btnScan.setOnClickListener {
@@ -83,6 +97,17 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener {
         }
         deleteProductDialog.arguments = bundle
         deleteProductDialog.show(supportFragmentManager, DeleteProductDialog.TAG)
+    }
+
+    override fun onEditListener(position: Int) {
+        val editProductDialog = EditProductDialog()
+        val bundle = Bundle().apply {
+            putInt("uid", listOfProducts[position].uid)
+            putString("productName", listOfProducts[position].productName)
+            putString("barcode", listOfProducts[position].barcode)
+        }
+        editProductDialog.arguments = bundle
+        editProductDialog.show(supportFragmentManager, EditProductDialog.TAG)
     }
 
 }
