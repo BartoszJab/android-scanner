@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp">
 
 
@@ -11,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Edytuj nazwę produktu\n"
+        android:text="Edytuj produkt\n"
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -23,9 +24,47 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Nazwa produktu"
-        app:layout_constraintLeft_toLeftOf="@id/tvHeader"
-        app:layout_constraintRight_toRightOf="@id/tvHeader"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvHeader" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvCountLabel"
+        android:text="Ilość"
+        app:layout_constraintTop_toBottomOf="@id/etProductName"
+        app:layout_constraintStart_toStartOf="@id/etProductName"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="@id/etProductName"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvCount"
+        app:layout_constraintTop_toBottomOf="@id/tvCountLabel"
+        app:layout_constraintStart_toStartOf="@id/etProductName"
+        app:layout_constraintEnd_toEndOf="@id/etProductName"
+        android:textSize="32dp"
+        tools:text="1"/>
+
+    <Button
+        android:id="@+id/btnPlus"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:text="+"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/tvCount"
+        app:layout_constraintTop_toTopOf="@id/tvCount"/>
+
+    <Button
+        android:id="@+id/btnMinus"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:text="-"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@id/tvCount"
+        app:layout_constraintTop_toTopOf="@id/tvCount"/>1
 
     <Button
         android:id="@+id/btnConfirm"
@@ -33,18 +72,18 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#26C6CD"
         android:text="Edytuj"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="@id/etProductName"
-        app:layout_constraintTop_toBottomOf="@id/etProductName"/>
+        app:layout_constraintTop_toBottomOf="@id/tvCount"/>
 
     <Button
         android:id="@+id/btnDecline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#EC407A"
         android:text="Anuluj"
         app:layout_constraintStart_toStartOf="@id/etProductName"
-        app:layout_constraintTop_toBottomOf="@id/etProductName"/>
+        app:layout_constraintTop_toBottomOf="@id/tvCount"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,12 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.example.scannerapplication.ScannerApp
 import com.example.scannerapplication.databinding.AddProductDialogBinding
 import com.example.scannerapplication.databinding.EditProductDialogBinding
 import com.example.scannerapplication.models.Product
+import com.example.scannerapplication.viewmodel.EditDialogViewModel
 import com.example.scannerapplication.viewmodel.ProductViewModel
+import com.example.scannerapplication.viewmodel.ProductViewModelFactory
 
 class EditProductDialog() : DialogFragment() {
     private var uid: Int? = null
@@ -18,6 +24,7 @@ class EditProductDialog() : DialogFragment() {
     lateinit var barcode: String
     var count: Int? = null
     var vm: ProductViewModel? = null
+    private val editDialogViewModel: EditDialogViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,10 +36,11 @@ class EditProductDialog() : DialogFragment() {
             productName = arguments!!.getString("productName", "")
             barcode = arguments!!.getString("barcode", "")
             count = arguments!!.getInt("count", 0)
+            editDialogViewModel.setCount(count!!)
         }
         vm = ViewModelProvider(requireActivity())[ProductViewModel::class.java]
         val binding = EditProductDialogBinding.inflate(LayoutInflater.from(context))
-        binding.tvHeader.text = "Edytuj nazwę produktu\n" + barcode
+        binding.tvHeader.text = "Edytuj produkt o numberze\n" + barcode
         binding.etProductName.setText(productName)
 
         binding.btnConfirm.setOnClickListener {
@@ -51,6 +59,21 @@ class EditProductDialog() : DialogFragment() {
 
         binding.btnDecline.setOnClickListener {
             dismiss()
+        }
+
+        editDialogViewModel.productCount.observe(this, { productCount ->
+            count = productCount
+            binding.btnMinus.isVisible = productCount > 1
+
+            binding.tvCount.text = productCount.toString()
+        })
+
+        binding.btnPlus.setOnClickListener {
+            editDialogViewModel.increaseCount()
+        }
+
+        binding.btnMinus.setOnClickListener {
+            editDialogViewModel.decreaseCount()
         }
 
         return binding.root
