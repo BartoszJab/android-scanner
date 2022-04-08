@@ -47,17 +47,11 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener, Prod
                     "Zeskanowano: " + result.contents,
                     Toast.LENGTH_LONG
                 ).show()
-                var numberOfProducts: Int = 0
-                numberOfProducts = productViewModel.numberOfProductsOfBarcode(result.contents.toString())
+                val numberOfProducts = productViewModel.numberOfProductsOfBarcode(result.contents.toString())
 
                 if (numberOfProducts > 0) {
-                    Toast.makeText(
-                        applicationContext,
-                        "Zeskanowany podukt istnieje w bazie: " + result.contents,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    productViewModel.increaseProductCount(result.contents)
                 } else {
-
                     // wyswietl dialog z dodaniem produktu do bazy
                     val addProductDialog = AddProductDialog()
                     val bundle = Bundle().apply {
@@ -106,6 +100,7 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener, Prod
             putInt("uid", listOfProducts[position].uid)
             putString("productName", listOfProducts[position].productName)
             putString("barcode", listOfProducts[position].barcode)
+            putInt("count", listOfProducts[position].count)
         }
         editProductDialog.arguments = bundle
         editProductDialog.show(supportFragmentManager, EditProductDialog.TAG)

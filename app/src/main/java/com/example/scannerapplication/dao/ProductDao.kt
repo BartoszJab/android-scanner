@@ -3,6 +3,7 @@ package com.example.scannerapplication.dao
 import androidx.room.*
 import com.example.scannerapplication.constants.BARCODE
 import com.example.scannerapplication.constants.PRODUCTS_TABLE
+import com.example.scannerapplication.constants.PRODUCT_COUNT
 import com.example.scannerapplication.constants.PRODUCT_NAME
 import com.example.scannerapplication.models.Product
 import kotlinx.coroutines.flow.Flow
@@ -20,6 +21,9 @@ interface ProductDao {
 
     @Query("SELECT COUNT(*) FROM $PRODUCTS_TABLE WHERE $BARCODE = :barcode")
     suspend fun numberOfProductsHavingBarcode(barcode: String) : Int
+
+    @Query("UPDATE $PRODUCTS_TABLE SET $PRODUCT_COUNT = $PRODUCT_COUNT + 1 WHERE $BARCODE = :barcode")
+    suspend fun increaseProductCount(barcode: String) : Int
 
     @Insert
     suspend fun insertProduct(product: Product)

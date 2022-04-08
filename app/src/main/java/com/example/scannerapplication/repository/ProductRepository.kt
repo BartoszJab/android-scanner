@@ -21,6 +21,10 @@ class ProductRepository(private val productDao: ProductDao) {
         productDao.updateProduct(product)
     }
 
+    suspend fun increaseProductCount(barcode: String) {
+        productDao.increaseProductCount(barcode)
+    }
+
     suspend fun numberOfProductsHavingBarcode(barcode: String): Int {
         return productDao.numberOfProductsHavingBarcode(barcode)
     }

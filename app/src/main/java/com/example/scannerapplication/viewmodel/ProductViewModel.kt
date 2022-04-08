@@ -30,6 +30,9 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
         a.await()
     }
 
+    fun increaseProductCount(barcode: String) = viewModelScope.launch {
+        repository.increaseProductCount(barcode)
+    }
 
     // launching new coroutine to insert data in a non-blocking way
     fun insert(product: Product) = viewModelScope.launch {

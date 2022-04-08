@@ -16,6 +16,7 @@ class EditProductDialog() : DialogFragment() {
     private var uid: Int? = null
     lateinit var productName: String
     lateinit var barcode: String
+    var count: Int? = null
     var vm: ProductViewModel? = null
 
     override fun onCreateView(
@@ -27,6 +28,7 @@ class EditProductDialog() : DialogFragment() {
             uid = arguments!!.getInt("uid", 0)
             productName = arguments!!.getString("productName", "")
             barcode = arguments!!.getString("barcode", "")
+            count = arguments!!.getInt("count", 0)
         }
         vm = ViewModelProvider(requireActivity())[ProductViewModel::class.java]
         val binding = EditProductDialogBinding.inflate(LayoutInflater.from(context))
@@ -42,7 +44,7 @@ class EditProductDialog() : DialogFragment() {
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                vm!!.update(Product(uid = uid!!, barcode = barcode, productName = productName))
+                vm!!.update(Product(uid = uid!!, barcode = barcode, productName = productName, count = count!!))
                 dismiss()
             }
         }

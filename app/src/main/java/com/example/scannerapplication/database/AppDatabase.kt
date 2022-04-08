@@ -9,7 +9,7 @@ import com.example.scannerapplication.dao.ProductDao
 import com.example.scannerapplication.models.Product
 import kotlinx.coroutines.CoroutineScope
 
-@Database(entities = [Product::class], version = 2)
+@Database(entities = [Product::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
 

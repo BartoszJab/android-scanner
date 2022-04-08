@@ -37,7 +37,7 @@ class AddProductDialog() : DialogFragment() {
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                vm!!.insert(Product(barcode = barcode, productName = productName))
+                vm!!.insert(Product(barcode = barcode, productName = productName, count = 1))
                 dismiss()
             }
         }

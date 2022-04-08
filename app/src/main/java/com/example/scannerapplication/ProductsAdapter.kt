@@ -19,6 +19,7 @@ class ProductsAdapter(private val allProducts: List<Product>, private val onDele
         val product = allProducts[position]
         holder.binding.tvBarcode.text = product.barcode
         holder.binding.tvProductName.text = product.productName
+        holder.binding.tvCount.text = product.count.toString()
     }
 
     override fun getItemCount(): Int = allProducts.size
