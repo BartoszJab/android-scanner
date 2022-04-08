@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.scannerapplication.R
 import com.example.scannerapplication.viewmodel.ProductViewModel
 
 class DeleteProductDialog : DialogFragment() {
@@ -19,11 +20,11 @@ class DeleteProductDialog : DialogFragment() {
         }
 
         return AlertDialog.Builder(requireContext())
-            .setMessage("Czy chcesz usunac produkt?")
-            .setPositiveButton("Tak") { _, _ ->
+            .setMessage(getString(R.string.delete_product_question))
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 vm!!.delete(uid!!)
             }
-            .setNegativeButton("Nie") { _, _ ->
+            .setNegativeButton(R.string.no) { _, _ ->
                 dismiss()
             }
             .create()

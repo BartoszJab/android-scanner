@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">ScannerApplication</string>
     <string name="search_product">Wyszukaj produkt</string>
+    <string name="quantity">Ilość</string>
+    <string name="product_name">Nazwa produktu</string>
+    <string name="plus_sign">+</string>
+    <string name="minus_sign">-</string>
+    <string name="edit">Edytuj</string>
+    <string name="cancel">Anuluj</string>
+    <string name="canceled">Anulowano</string>
+    <string name="x_sign">x</string>
+    <string name="no">Nie</string>
+    <string name="yes">Tak</string>
+    <string name="add_product_question">Czy chcesz dodać produkt o numerze\n%s</string>
+    <string name="edit_product_label">Edytuj produkt o numerze\n%s</string>
+    <string name="cant_add_product_without_name">Nie mozna dodac produktu z pustymi polami</string>
+    <string name="delete_product_question">Czy chcesz usunac produkt?</string>
 </resources>

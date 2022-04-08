@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.scannerapplication.R
 import com.example.scannerapplication.databinding.AddProductDialogBinding
 import com.example.scannerapplication.models.Product
 import com.example.scannerapplication.viewmodel.ProductViewModel
@@ -26,14 +27,14 @@ class AddProductDialog() : DialogFragment() {
         vm = ViewModelProvider(requireActivity())[ProductViewModel::class.java]
         val binding = AddProductDialogBinding.inflate(LayoutInflater.from(context))
 
-        binding.tvHeader.text = "Czy chcesz dodać produkt o numerze\n" + barcode
+        binding.tvHeader.text = getString(R.string.add_product_question, barcode)
 
         binding.btnConfirm.setOnClickListener {
             val productName = binding.etProductName.text.toString()
             if (barcode.isEmpty() || productName.isEmpty()) {
                 Toast.makeText(
                     context,
-                    "Nie mozna dodac produktu z pustymi polami",
+                    R.string.cant_add_product_without_name,
                     Toast.LENGTH_LONG
                 ).show()
             } else {

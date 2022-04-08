@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp">
 
 
@@ -11,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Czy chcesz dodać produkt o numerze\n"
+        tools:text="@string/add_product_question"
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -22,7 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Nazwa produktu"
+        android:hint="@string/product_name"
         app:layout_constraintLeft_toLeftOf="@id/tvHeader"
         app:layout_constraintRight_toRightOf="@id/tvHeader"
         app:layout_constraintTop_toBottomOf="@id/tvHeader" />
@@ -33,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#26C6CD"
-        android:text="Tak"
+        android:text="@string/yes"
         app:layout_constraintEnd_toEndOf="@id/etProductName"
         app:layout_constraintTop_toBottomOf="@id/etProductName"/>
 
@@ -43,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:backgroundTint="#EC407A"
-        android:text="Nie"
+        android:text="@string/no"
         app:layout_constraintStart_toStartOf="@id/etProductName"
         app:layout_constraintTop_toBottomOf="@id/etProductName"/>
 

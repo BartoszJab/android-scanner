@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.example.scannerapplication.R
 import com.example.scannerapplication.ScannerApp
 import com.example.scannerapplication.databinding.AddProductDialogBinding
 import com.example.scannerapplication.databinding.EditProductDialogBinding
@@ -40,7 +41,7 @@ class EditProductDialog() : DialogFragment() {
         }
         vm = ViewModelProvider(requireActivity())[ProductViewModel::class.java]
         val binding = EditProductDialogBinding.inflate(LayoutInflater.from(context))
-        binding.tvHeader.text = "Edytuj produkt o numberze\n" + barcode
+        binding.tvHeader.text = getString(R.string.edit_product_label, barcode)
         binding.etProductName.setText(productName)
 
         binding.btnConfirm.setOnClickListener {
@@ -48,7 +49,7 @@ class EditProductDialog() : DialogFragment() {
             if (productName.isEmpty()) {
                 Toast.makeText(
                     context,
-                    "Nie mozna dodac produktu z pustymi polami",
+                    getString(R.string.cant_add_product_without_name),
                     Toast.LENGTH_LONG
                 ).show()
             } else {

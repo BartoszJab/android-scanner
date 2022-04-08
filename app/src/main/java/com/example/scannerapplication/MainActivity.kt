@@ -16,9 +16,6 @@ import com.example.scannerapplication.viewmodel.ProductViewModel
 import com.example.scannerapplication.viewmodel.ProductViewModelFactory
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener, ProductsAdapter.OnEditListener {
@@ -40,13 +37,8 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener, Prod
             ScanContract()
         ) { result ->
             if (result.contents == null) {
-                Toast.makeText(applicationContext, "Anulowano", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, getString(R.string.canceled), Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(
-                    applicationContext,
-                    "Zeskanowano: " + result.contents,
-                    Toast.LENGTH_LONG
-                ).show()
                 val numberOfProducts = productViewModel.numberOfProductsOfBarcode(result.contents.toString())
 
                 if (numberOfProducts > 0) {
