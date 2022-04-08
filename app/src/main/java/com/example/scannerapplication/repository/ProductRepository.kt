@@ -13,16 +13,16 @@ class ProductRepository(private val productDao: ProductDao) {
         return productDao.findByGivenData(data)
     }
 
-    fun numberOfProductsOfBarcode(barcode: String) : Int {
-        return productDao.numberOfProductsOfBarcode(barcode)
-    }
-
     suspend fun insert(product: Product) {
         productDao.insertProduct(product)
     }
 
     suspend fun update(product: Product) {
         productDao.updateProduct(product)
+    }
+
+    suspend fun numberOfProductsHavingBarcode(barcode: String): Int {
+        return productDao.numberOfProductsHavingBarcode(barcode)
     }
 
     suspend fun delete(uid: Int) {

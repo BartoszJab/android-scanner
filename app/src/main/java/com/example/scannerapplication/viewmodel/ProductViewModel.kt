@@ -5,12 +5,11 @@ import com.example.scannerapplication.models.Product
 import com.example.scannerapplication.repository.ProductRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.lang.IllegalArgumentException
 
 class ProductViewModel(private val repository: ProductRepository) : ViewModel() {
-    private val searchString = MutableLiveData("")
-    private val isBarcodeFound = MutableLiveData(false)
-
+    private val searchString = MutableLiveData<String>("")
 
     val searchedProducts = Transformations.switchMap(searchString) { string ->
         if (string.isEmpty()) {
@@ -20,18 +19,17 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
         }
     }
 
-    fun findByBarcode(barcode: String) {
-        val n = repository.numberOfProductsOfBarcode(barcode)
-
-    }
-
     fun findLikeGivenData(data: String) {
         searchString.value = data
     }
 
-    fun numberOfProductsOfBarcode(barcode: String) : Int {
-        return repository.numberOfProductsOfBarcode(barcode)
+    fun numberOfProductsOfBarcode(barcode: String) : Int = runBlocking {
+        val a = async {
+            repository.numberOfProductsHavingBarcode(barcode)
+        }
+        a.await()
     }
+
 
     // launching new coroutine to insert data in a non-blocking way
     fun insert(product: Product) = viewModelScope.launch {

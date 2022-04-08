@@ -16,6 +16,9 @@ import com.example.scannerapplication.viewmodel.ProductViewModel
 import com.example.scannerapplication.viewmodel.ProductViewModelFactory
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener, ProductsAdapter.OnEditListener {
@@ -45,9 +48,7 @@ class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener, Prod
                     Toast.LENGTH_LONG
                 ).show()
                 var numberOfProducts: Int = 0
-//                runOnUiThread {
-//                    numberOfProducts = productViewModel.numberOfProductsOfBarcode(result.contents.toString())
-//                }
+                numberOfProducts = productViewModel.numberOfProductsOfBarcode(result.contents.toString())
 
                 if (numberOfProducts > 0) {
                     Toast.makeText(
