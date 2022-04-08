@@ -21,7 +21,6 @@ import com.journeyapps.barcodescanner.ScanOptions
 class MainActivity : AppCompatActivity(), ProductsAdapter.OnDeleteListener, ProductsAdapter.OnEditListener {
     private lateinit var binding: ActivityMainBinding
     private var listOfProducts: List<Product> = listOf()
-    lateinit var dialog: AddProductDialog
     private val productViewModel: ProductViewModel by viewModels {
         ProductViewModelFactory((application as ScannerApp).repository)
     }
